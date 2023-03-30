@@ -172,8 +172,8 @@ Une autre page s’affichera. Celle-ci possède plusieurs onglets : directories 
 
 - Preprocess :
 
-Dans le premier onglet, il faut ajouter les chemins vers les images et labels pour le train (les dossiers doivent être nommé Images et Labels pour le train et le 
-test), puis ceux pour le test et enfin un dossier vide pour les résultats.
+Dans le premier onglet, il faut ajouter les chemins vers les patchs pour le train (les dossiers doivent être nommé Images et Labels pour le train et le 
+test), puis ceux pour le test et enfin un dossier vide pour les résultats. Les patchs du dossier d'entraînement doivent être différent de ceux du dossier test.
 
 Dans notre cas, les images sont des tiff et les masques sont des png. Dans les cases « extension » du train et du test, il faut choisir « TIF » ATTENTION pas « TIFF ».
 Si la case « Single MIB model file » est cochée, décocher-la et indiquer « PNG » dans la case « Model extension ». Pour la case « Mask extension », laisser « MASK ».
