@@ -112,7 +112,7 @@ autres images. Pour l'appliquer à toutes les images utiliser le script groovy �
 Afin d’appliquer le pixel classifier à d’autres images ou bien le réappliquer à l’image après avoir fermé l’onglet, utiliser «load pixel classifier». 
 Sélectionner le modèle que vous souhaitez et il sera automatiquement appliqué à l’entièreté de l’image.
 
-Voici un GIF pour voir comment faire (il faut sélectiodéclarernner autant de fois l'annotation que l'on veut d'image dans notre train image) :
+Voici un GIF pour voir comment faire (il faut sélectionner autant de fois l'annotation que l'on veut d'image dans notre train image) :
 ![Création de "training image"](https://github.com/GeNeHetX/IASegmentation/blob/main/QuPath-DeepMIB/video_training-image.gif?raw=true)
 
 <div id='patchs'/> 
