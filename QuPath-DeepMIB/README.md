@@ -107,8 +107,13 @@ importe la taille) et les mettre sous une nouvelle classe que vous aurez créé 
 Une « image » est créée avec l'ensemble de vos échantillons. Vous pouvez alors effectuer toutes les étapes du pixel classifier dessus, l'enregistrer et l'appliquer aux 
 autres images. Pour l'appliquer à toutes les images utiliser le script groovy « PixelClassifier.groovy » et le lancer pour le projet (une fenêtre pour sélectionner les images qui sont impliqués s'affiche sélectionner celle que vous voulez).
 
+
+
 Afin d’appliquer le pixel classifier à d’autres images ou bien le réappliquer à l’image après avoir fermé l’onglet, utiliser «load pixel classifier». 
 Sélectionner le modèle que vous souhaitez et il sera automatiquement appliqué à l’entièreté de l’image.
+
+Voici un GIF pour voir comment faire (il faut sélectiodéclarernner autant de fois l'annotation que l'on veut d'image dans notre train image) :
+![Création de "training image"](https://github.com/GeNeHetX/IASegmentation/blob/main/QuPath-DeepMIB/video_training-image.gif?raw=true)
 
 <div id='patchs'/> 
 
@@ -116,6 +121,8 @@ Sélectionner le modèle que vous souhaitez et il sera automatiquement appliqué
 
 Si vous souhaitez appliquer les annotations à une ROI, sélectionner l'annotation correspondante à celle-ci, rendez vous dans « Automate », « Show script 
 editor ». Vous pourrez enfin appliquer cette ligne de code *createAnnotationsFromPixelCLassifier(«nom de votre modèle», 50.0, 50.0, « SELECT_NEW »)*.
+
+Si vous voulez lancer le classifier sur plusieursimages en même temps : mettez toutes les zones qui vous intéresse dans une même class, puis lancer le code PixelClassifierAnnotationsInClass.groovy en changeant le modèle et la classe qui vous intéresse (le code doit être lancé pour le projet, un  fenetre apparait pour demander sur quelles image il doit être lancé sélectionné celle que vous souhaitez). 
 
 Sinon, lancer le Pixel Classifier à l'aide du « load pixel classifier". D’abord, sélectionner le modèle correspondant au Pixel Classifier enregistré. Les 
 annotations vont donc être appliqué à toute l’image. Ensuite, sélectionner la ROI en cliquant sur l'annotation. 
@@ -175,7 +182,7 @@ Une autre page s’affichera. Celle-ci possède plusieurs onglets : directories 
 
 Dans le premier onglet, il faut ajouter les chemins vers les patchs pour le train (les dossiers doivent être nommé Images et Labels pour le train et le 
 test), puis ceux pour le test et enfin un dossier vide pour les résultats. ATTENTION ! Les patchs du dossier d'entraînement doivent être différent de ceux du dossier 
-test.
+test. Vous devez donc séparer les images en deux groupes une pour le test et l'autre pour le train (on peut couramment faire 80% pour le train, 20% pour le test).
 
 Dans notre cas, les images sont des tiff et les masques sont des png. Dans les cases « extension » du train et du test, il faut choisir « TIF » ATTENTION pas « TIFF ».
 Si la case « Single MIB model file » est cochée, décocher-la et indiquer « PNG » dans la case « Model extension ». Pour la case « Mask extension », laisser « MASK ».
@@ -202,7 +209,7 @@ Enfin, dans la partie « training process design », « Patches per image » met
 Appuyer sur « training » afin de configurer quelques hyper-paramètres. Le solverName doit être « adam ». Ensuite, vous pouvez choisir le nombre d’epoch, modifier 
 l’initial learn rate en rajoutant ou enlevant des 0 après la virgule jusqu’à obtenir de bons résultats d'accuracy et d'IoU, indiquer « none » pour « learnRateSchedule 
 » et mettre le decay rate of gradient moving average à 0.99. Tous les autres hyper-paramètres doivent être laissé par défaut.
-Maintenant, vous pouvez lancer l’entrainement de votre modèle.
+Maintenant, vous pouvez lancer l’entrainement de votre modèle (ça prend beaucoup de temps).
  
 Une fois celui-ci terminé, passer à l’onglet « prediction ». 
 
