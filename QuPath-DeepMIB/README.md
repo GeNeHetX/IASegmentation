@@ -81,7 +81,7 @@ Si vous n'avez pas de région d'intérêt annotée :
 
 Tout d’abord, vous pouvez choisir des classes déjà existantes ou bien les créer, définir leur nom et leur couleur (onglet Annotations). Puis, réaliser quelques 
 annotations à l’aide des Tools comme présenté précédemment. Lorsque les annotations sont réalisées, il faut les associer à la classe correspondante. Pour cela, il faut 
-appuyer sur l’annotation, puis sur la classe et enfin sur « set class ».
+appuyer sur l’annotation, puis sur la classe et enfin sur « set class ». Pour pouvoir lancer le pixel classifier, vous devez au moins sélectionner une zone pour 2 classes différentes.
 
 Maintenant vous pouvez démarrer votre Pixel Classifier. 
 
@@ -98,14 +98,14 @@ Toute l’image est annotée et nous avons une idée de la proportion de région
 s’affiche. L'idéal est d'avoir des proportions similaires entre les différentes classes.
 Enfin, vous pouvez enregistrer votre Pixel classifier.
 
-Si vous avez une région d'intérêt :
+Si vous avez une région d'intérêt sur plusieurs images :
 
-Une autre méthode qui peut potentiellement donner de meilleurs résultats. Tout d’abord, sélectionner une partie de la ROI de plusieurs images (peu 
+Il y a une autre méthode qui peut potentiellement donner de meilleurs résultats. Tout d’abord, sélectionner une partie de la ROI de plusieurs images (peu 
 importe la taille) et les mettre sous une nouvelle classe que vous aurez créé au préalable. Ensuite, vous appuyez sur « Classify », « training images », 
 « Create training image » et cliquer sur la classe qui contient vos échantillons (dans l'onglet cliquable) et appuyer sur « Ok ».
 
 Une « image » est créée avec l'ensemble de vos échantillons. Vous pouvez alors effectuer toutes les étapes du pixel classifier dessus, l'enregistrer et l'appliquer aux 
-autres images. Pour l'appliquer à toutes les images utiliser le script groovy « PixelClassifier.groovy »
+autres images. Pour l'appliquer à toutes les images utiliser le script groovy « PixelClassifier.groovy » et le lancer pour le projet (une fenêtre pour sélectionner les images qui sont impliqués s'affiche sélectionner celle que vous voulez).
 
 Afin d’appliquer le pixel classifier à d’autres images ou bien le réappliquer à l’image après avoir fermé l’onglet, utiliser «load pixel classifier». 
 Sélectionner le modèle que vous souhaitez et il sera automatiquement appliqué à l’entièreté de l’image.
