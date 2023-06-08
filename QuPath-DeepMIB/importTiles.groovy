@@ -69,7 +69,7 @@ if (files.isEmpty()) {
 int spaces = 40;
 float progress = 100.0;
 int counter = 0;
-int nbPatches = files.size;
+int nbPatches = files.size();
 
 // Create annotations for all the files
 def annotations = [];

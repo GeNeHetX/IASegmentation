@@ -230,8 +230,8 @@ Mettez le chemin du dossier contenant les images à la place du dossier test, et
 prédiction sans effectuer aucun autre changement.
 
 Ensuite, appuyer sur « Load images and models ». Les images s’afficheront sur la page d'accueil. Pour les enregistrer, dirigez-vous dans le menu « models », puis dans 
-« save model as ». Il faut d’abord modifier l’extension et choisir tif, puis, changer de dossier. Retourner dans « prediction images » ,puis, aller dans « results 
-scores ». Vous pouvez, enfin, enregistrer vos annotations de prédiction.
+« save model as ». Il faut d’abord modifier l’extension et choisir tif, puis, chosir l'emplacement de vos fichiers. Retournez dans « prediction images » ,puis allez dans « results 
+scores ». Vous pouvez, enfin, enregistrer vos annotations de prédiction. Il va s'ouvrir deux fenetres, cliquez sur 2D puis sur original (pour garder le nom du fichier initial).
  
 *Pour obtenir ces images, il faut passer par QuPath et utiliser le code exportTiles.groovy
 Les modifications à réaliser sont :
@@ -250,5 +250,7 @@ est bonne, plus l’image est grosse. Le problème est que DeepMIB ne peut pas r
 Ouvrir le projet QuPath où vous voulez transférer vos annotations, dans le menu « Automate », « Show script editor » copier ou importer le code « importTiles.groovy ». 
 Modifier les paramètres « className » et « pathOutput » afin qu’il soit adapté à votre cas. Lancer le code pour tout le projet. Vous n’avez plus qu’à patienter et 
 faire corriger les résultats par un/e anatomopathologiste. 
+
+* Si il n'apparait pas d'annotations, verifiez que le nom des images dans résult score est identique à celui des images dans Qupath, le cas échéant renommez les images dans QuPath pour qu'il soit pareil.
 
 FIN.
