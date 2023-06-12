@@ -1,8 +1,10 @@
 def annotations = getAnnotationObjects()
-def path = "path/to/file.geojson"
+def path = "D:/Raphael DT/geojson_segmentation/result_3/"
+def imageData= getCurrentImageData()
+def name=GeneralTools.getNameWithoutExtension(imageData.getServer().getMetadata().getName()).minus("_HES")
 
 // 'FEATURE_COLLECTION' is standard GeoJSON format for multiple objects
-exportObjectsToGeoJson(annotations, path, "FEATURE_COLLECTION")
+exportObjectsToGeoJson(annotations, path + name + ".geojson", "FEATURE_COLLECTION")
 
 // The same method without the 'FEATURE_COLLECTION' parameter outputs a simple JSON object/array
 // exportObjectsToGeoJson(annotations, path)

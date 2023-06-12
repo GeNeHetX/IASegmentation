@@ -22,7 +22,7 @@ import segmentation_models_pytorch as smp
 
 
 # Indicate the path where your files are located
-DATA_DIR = 'C:/Users/Hajar/Documents/vscode/Python_segmentation/Tumor'
+DATA_DIR = "D:/Raphael DT/python"
 
 x_train_dir = os.path.join(DATA_DIR, 'train')
 y_train_dir = os.path.join(DATA_DIR, 'train_labels')
@@ -33,8 +33,8 @@ y_valid_dir = os.path.join(DATA_DIR, 'val_labels')
 x_test_dir = os.path.join(DATA_DIR, 'test')
 y_test_dir = os.path.join(DATA_DIR, 'test_labels')
 
-class_name = ['Background', 'Tumor', 'Nerve', 'Islet']
-rgb_values = [[255, 255, 255], [200, 0, 0], [0, 255, 255], [41, 248, 75]]
+class_name = ['Background', 'Tumor']
+rgb_values = [[255, 255, 255], [200, 0, 0]]
 select_class_name = ['Background', 'Tumor']
 
 
@@ -282,10 +282,10 @@ def main():
     valid_loader = DataLoader(valid_dataset, batch_size=1, shuffle=False, num_workers=1)
 
     # Set flag to train the model or not. If set to 'False', only prediction is performed (using an older model checkpoint)
-    TRAINING = False
+    TRAINING = True
 
     # Set num of epochs
-    EPOCHS = 100
+    EPOCHS = 10
 
     # Set device: `cuda` or `cpu`
     DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -350,18 +350,18 @@ def main():
             # Save model if a better val IoU score is obtained
             if best_iou_score < valid_logs['iou_score']:
                 best_iou_score = valid_logs['iou_score']
-                torch.save(model, './best_model.pth')
+                torch.save(model, './model_0.pth')
                 print('Model saved!')
 
 
     # load best saved model checkpoint from the current run
-    if os.path.exists('C:/Users/Hajar/Documents/vscode/best_model.pth'):
-        best_model = torch.load('./best_model.pth', map_location=DEVICE)
+    if os.path.exists('D:/Raphael DT/python/model_0.pth'):
+        best_model = torch.load('./model_0.pth', map_location=DEVICE)
         print('Loaded DeepLabV3+ model from this run.')
 
     # load best saved model checkpoint from previous commit (if present)
-    elif os.path.exists('C:/Users/Hajar/Documents/vscode/best_model.pth'):
-        best_model = torch.load('C:/Users/Hajar/Documents/vscode/best_model.pth', map_location=DEVICE)
+    elif os.path.exists('D:/Raphael DT/python/model_0.pth'):
+        best_model = torch.load('D:/Raphael DT/python/model_0.pth', map_location=DEVICE)
         print('Loaded DeepLabV3+ model from a previous commit.')
     
 
