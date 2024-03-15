@@ -1,171 +1,262 @@
-# Segmentation d'images avec Python
+# Information générale 
 
-## Segmentation Sampler
+###  L'ensemble de mon travail est regroupé dans ces 4 dossiers :
 
-### Les données d'entrée 
+- `prep_data` : contient l'ensemble des codes permettant la préparation des données avec l'utilisation de QuPath et de Valis. Vous trouverez plus de détails dans le fichier `.md` du dossier. 
 
-Il prend en entrée : 
-- RESULT_DIR (str) : Chemin du dossier de destination des résultats
-- TRAINNING (bool) : S'il faut fiare un entrainement
-- PREDICTION_LOOP (bool) : S'il faut créer les prédictions sous forme de carte de proba
-- RELOAD_TRAINNING (bool) : S'il faut réutiliser un précédent modèles
-- class_name (list) : Liste contenant le nom des classes
-- rgb_value (list) : Valeur des couleurs de nos classes
-- ENCODER (str) : Modèle utilisé pour la segmentation, voir les compatibilité pour la libraire SMP
-- ENCODER_WEIGHTS (str) : Fine tunning utilisé pour le modèle, voir  la compatibilité pour la libraire SMP
-- TRAIN_PARAMETERS (list) : Paramètres pour l'entrainement et le test (effectué séqunetiellement par élément de la liste). Il suit cet ordre  : [ batch_size (int), nombre d'époque (int), learning rate (float), chemin du dataset (str), taille des images (int), chemin du modèle à réutiliser]
+- `AI` : contient les codes pour l'entraînement du modèle de segmentation/classification ainsi que les meilleurs modèles enregistrés. Vous trouverez plus de détails dans le fichier `.md` du dossier.
 
-### Les données de sortie
+- `Eval` : contient les codes permettant d'évaluer les performances de nos modèles. On y trouve le code pour la visualisation des lames ainsi que pour le calcul des métriques. Vous trouverez plus de détails dans le fichier `.md` du dossier.
 
-Le code ressort plusieurs  données toutes contenu ans le dossier indiqués dans le résultat. Pour chauqe modèle, il crée un dossier nommé train{i} avec le i correspondant au numéro de l'entrainement dans l'ordre spécifié au dessus (en commençant par 0). Chacun de ces dossier comprends :
-- Le modèle en .pth
-- Les métriques de validations en .CSV 
-- Les métriques d'entrainement en .CSV
-- Les métriques de test en .CSV
-- Un graphe représentant l'évolution des métriques (peu utile en soit)
-- Un dossier comprenant les prédictions (si la prédicitons loop est activé) c'est à dire des tuiles (images PNG) représenant la probabilités de tumeurs entre 0 et 255. Le même nom que les images initales est gardé.
+#### QuPath est utilisé avec la version **0.4.4**
 
-### Information sur le code :
+#### Python **3.10.12** est utilisé via Ubuntu avec les bibliothèques suivantes :
 
-Organisation générale du code :
-- La première partie regroupe la déclaration des entrées qui ont été le plus possible regroupés au début du code, elles sont détaillés dans les entrées du code. (Ligne 20 à 43)
-- La deuxième la déclaration de fonction nécessaire pour fonctionner (Ligne 45 à 348)
+| Package                      | Version      |
+|------------------------------|--------------|
+| absl-py                      | 2.0.0        |
+| affine                       | 2.4.0        |
+| albumentations               | 1.3.1        |
+| anyio                        | 4.0.0        |
+| argon2-cffi                  | 23.1.0       |
+| argon2-cffi-bindings         | 21.2.0       |
+| arrow                        | 1.3.0        |
+| asttokens                    | 2.4.0        |
+| astunparse                   | 1.6.3        |
+| async-lru                    | 2.0.4        |
+| attrs                        | 23.1.0       |
+| Babel                        | 2.13.1       |
+| backcall                     | 0.2.0        |
+| beautifulsoup4               | 4.12.2       |
+| bleach                       | 6.1.0        |
+| blinker                      | 1.4          |
+| cachetools                   | 5.3.2        |
+| certifi                      | 2023.7.22   |
+| cffi                         | 1.16.0       |
+| charset-normalizer           | 3.3.1        |
+| click                        | 8.1.7        |
+| click-plugins                | 1.1.1        |
+| cligj                        | 0.7.2        |
+| comm                         | 0.1.4        |
+| command-not-found            | 0.3          |
+| contourpy                    | 1.2.0        |
+| cryptography                 | 3.4.8        |
+| csbdeep                      | 0.7.4        |
+| cycler                       | 0.12.1       |
+| Cython                       | 3.0.8        |
+| dbus-python                  | 1.2.18       |
+| debugpy                      | 1.8.0        |
+| decorator                    | 5.1.1        |
+| defusedxml                   | 0.7.1        |
+| dill                         | 0.3.3        |
+| distro                       | 1.7.0        |
+| distro-info                  | 1.1build1   |
+| efficientnet-pytorch         | 0.7.1        |
+| et-xmlfile                   | 1.1.0        |
+| exceptiongroup               | 1.1.3        |
+| executing                    | 2.0.0        |
+| fastjsonschema               | 2.18.1       |
+| filelock                     | 3.13.1       |
+| fiona                        | 1.9.5        |
+| flatbuffers                  | 23.5.26      |
+| fonttools                    | 4.44.1       |
+| fqdn                         | 1.5.1        |
+| fsspec                       | 2023.10.0   |
+| gast                         | 0.5.4        |
+| geojson                      | 3.1.0        |
+| geopandas                    | 0.14.1       |
+| google-auth                  | 2.23.4       |
+| google-auth-oauthlib         | 1.0.0        |
+| google-pasta                 | 0.2.0        |
+| grpcio                       | 1.59.2       |
+| h5py                         | 3.10.0       |
+| histoqc                      | 2.1.post145+g8943838 |
+| httplib2                     | 0.20.2       |
+| huggingface-hub              | 0.19.1       |
+| idna                         | 3.4          |
+| imagecodecs                  | 2023.9.18   |
+| imageio                      | 2.32.0       |
+| importlib-metadata           | 4.6.4        |
+| importlib-resources          | 6.1.1        |
+| iniconfig                    | 2.0.0        |
+| ipykernel                    | 6.26.0       |
+| ipython                      | 8.16.1       |
+| ipython_genutils             | 0.2.0        |
+| isoduration                  | 20.11.0      |
+| jedi                         | 0.19.1       |
+| jeepney                      | 0.7.1        |
+| Jinja2                       | 3.1.2        |
+| joblib                       | 1.3.2        |
+| json5                        | 0.9.14       |
+| jsonpointer                  | 2.4          |
+| jsonschema                   | 4.19.1       |
+| jsonschema-specifications    | 2023.7.1   |
+| jupyter_client               | 8.5.0        |
+| jupyter_core                 | 5.4.0        |
+| jupyter-events               | 0.8.0        |
+| jupyter-lsp                  | 2.2.0        |
+| jupyter_server               | 2.9.1        |
+| jupyter_server_terminals     | 0.4.4        |
+| jupyterlab                   | 4.0.7        |
+| jupyterlab-pygments          | 0.2.2        |
+| jupyterlab_server            | 2.25.0       |
+| keras                        | 2.15.0      |
+| keyring                      | 23.5.0       |
+| kiwisolver                   | 1.4.5        |
+| launchpadlib                 | 1.10.16      |
+| lazr.restfulclient           | 0.14.4       |
+| lazr.uri                     | 1.0.6        |
+| lazy_loader                  | 0.3          |
+| lazy-property                | 0.0.1        |
+| libclang                     | 16.0.6       |
+| llvmlite                     | 0.41.1       |
+| Markdown                     | 3.5.1        |
+| MarkupSafe                   | 2.1.3        |
+| matplotlib                   | 3.7.4        |
+| matplotlib-inline            | 0.1.6        |
+| mistune                      | 3.0.2        |
+| ml-dtypes                    | 0.2.0        |
+| more-itertools               | 8.10.0       |
+| mpmath                       | 1.3.0        |
+| munch                        | 4.0.0        |
+| nbclient                     | 0.8.0        |
+| nbconvert                    | 7.9.2        |
+| nbformat                     | 5.9.2        |
+| nest-asyncio                 | 1.5.8        |
+| netifaces                    | 0.11.0       |
+| networkx                     | 3.2.1        |
+| notebook                     | 7.0.6        |
+| notebook_shim                | 0.2.3        |
+| numba                        | 0.58.1       |
+| numpy                        | 1.23.5       |
+| nvidia-cublas-cu12           | 12.1.3.1     |
+| nvidia-cuda-cupti-cu12       | 12.1.105     |
+| nvidia-cuda-nvrtc-cu12       | 12.1.105     |
+| nvidia-cuda-runtime-cu12     | 12.1.105     |
+| nvidia-cudnn-cu12            | 8.9.2.26     |
+| nvidia-cufft-cu12            | 11.0.2.54    |
+| nvidia-curand-cu12           | 10.3.2.106   |
+| nvidia-cusolver-cu12         | 11.4.5.107   |
+| nvidia-cusparse-cu12         | 12.1.0.106   |
+| nvidia-nccl-cu12             | 2.18.1       |
+| nvidia-nvjitlink-cu12        | 12.3.52      |
+| nvidia-nvtx-cu12             | 12.1.105     |
+| oauthlib                     | 3.2.0        |
+| opencv-python                | 4.8.1.78     |
+| opencv-python-headless       | 4.8.1.78     |
+| openpyxl                     | 3.1.2        |
+| openslide-python             | 1.1.2        |
+| opt-einsum                   | 3.3.0        |
+| overrides                    | 7.4.0        |
+| packaging                    | 23.2         |
+| pandas                       | 2.1.3        |
+| pandocfilters                | 1.5.0        |
+| parso                        | 0.8.3        |
+| pexpect                      | 4.8.0        |
+| pickleshare                  | 0.7.5        |
+| Pillow                       | 9.4.0        |
+| pip                          | 23.3.1       |
+| platformdirs                 | 3.11.0       |
+| pluggy                       | 1.3.0        |
+| pretrainedmodels             | 0.7.4        |
+| prometheus-client            | 0.17.1       |
+| prompt-toolkit               | 3.0.39       |
+| protobuf                     | 4.23.4       |
+| psutil                       | 5.9.6        |
+| ptyprocess                   | 0.7.0        |
+| pure-eval                    | 0.2.2        |
+| py                           | 1.11.0       |
+| pyasn1                       | 0.5.0        |
+| pyasn1-modules               | 0.3.0        |
+| pycparser                    | 2.21         |
+| Pygments                     | 2.16.1       |
+| PyGObject                    | 3.42.1       |
+| PyJWT                        | 2.3.0        |
+| pyparsing                    | 2.4.7        |
+| pyproj                       | 3.6.1        |
+| pytest                       | 7.1.3        |
+| python-apt                   | 2.4.0+ubuntu1 |
+| python-dateutil              | 2.8.2        |
+| python-json-logger           |2.0.7        |
+| pytz                         | 2023.3.post1 |
+| PyWavelets                   | 1.5.0        |
+| PyYAML                       | 5.4.1        |
+| pyzmq                        | 25.1.1       |
+| qudida                       | 0.0.4        |
+| rasterio                     | 1.3.9        |
+| referencing                  | 0.30.2       |
+| requests                     | 2.28.2       |
+| requests-oauthlib            | 1.3.1        |
+| rfc3339-validator            | 0.1.4        |
+| rfc3986-validator            | 0.1.1        |
+| rpds-py                      | 0.10.6       |
+| rsa                          | 4.9          |
+| safetensors                  | 0.4.0        |
+| scikit-image                 | 0.19.3       |
+| scikit-learn                 | 1.2.2        |
+| scipy                        | 1.10.0       |
+| screen-resolution-extra      | 0.0.0        |
+| seaborn                      | 0.13.0       |
+| SecretStorage                | 3.3.1        |
+| segmentation-models-pytorch  | 0.3.3        |
+| Send2Trash                   | 1.8.2        |
+| setuptools                   | 65.6.3       |
+| shapely                      | 2.0.2        |
+| six                          | 1.16.0       |
+| sklearn                      | 0.0.post11  |
+| sniffio                      | 1.3.0        |
+| snuggs                       | 1.4.7        |
+| soupsieve                    | 2.5          |
+| stack-data                   | 0.6.3        |
+| stardist                     | 0.8.5        |
+| sympy                        | 1.12         |
+| systemd-python               | 234          |
+| tensorboard                  | 2.15.1       |
+| tensorboard-data-server      | 0.7.2        |
+| tensorflow                   | 2.15.0       |
+| tensorflow-cpu               | 2.15.0       |
+| tensorflow-estimator         | 2.15.0       |
+| tensorflow-io-gcs-filesystem | 0.34.0       |
+| tensorrt                     | 8.6.1.post1  |
+| tensorrt-bindings            | 8.6.1        |
+| tensorrt-libs                | 8.6.1        |
+| termcolor                    | 2.3.0        |
+| terminado                    | 0.17.1       |
+| threadpoolctl                | 3.2.0        |
+| tifffile                     | 2023.9.26   |
+| timm                         | 0.9.2        |
+| tinycss2                     | 1.2.1        |
+| tomli                        | 2.0.1        |
+| torch                        | 2.1.2        |
+| torchvision                  | 0.16.0       |
+| tornado                      | 6.3.3        |
+| tqdm                         | 4.66.1       |
+| traitlets                    | 5.12.0       |
+| triton                       | 2.1.0        |
+| types-python-dateutil        | 2.8.19.14    |
+| typing_extensions            | 4.8.0        |
+| tzdata                       | 2023.3       |
+| ubuntu-advantage-tools       | 8001         |
+| ufw                          | 0.36.1       |
+| unattended-upgrades          | 0.1          |
+| uri-template                 | 1.3.0        |
+| urllib3                      | 1.26.18      |
+| valis                        | 0.1          |
+| wadllib                      | 1.3.6        |
+| wcwidth                      | 0.2.8        |
+| webcolors                    | 1.13         |
+| webencodings                 | 0.5.1        |
+| websocket-client             | 1.6.4        |
+| Werkzeug                     | 3.0.1        |
+| wheel                        | 0.37.1       |
+| wrapt                        | 1.14.1       |
+| xkit                         | 0.0.0        |
+| zipp                         | 1.0.0        |
 
-A la ligne 285, il est indiqué l'augmentation qui est souhaité pour l'entrainement
+******
 
-A la ligne 311 celle pour la validation et le test
+Résultats obtenus avec la commande :
 
-Les dossier dans lequels doivent être les images sont dans le dossier dataset sous le nom suivant :
-- train et train_labels pour l'ensemble d'entrainement respectivement pour les images et pour les masques.
-- val et val_labels pour l'ensemble de validation respectivement pour les images et pour les masques
-- test et test_labels pour l'ensemble de test respectivement pour les images et pour les masques
-
-Ligne 422 il y a une ébauche pour le learning rate scheduler qui n'est pas fonctionnel en l'etat.
-
-
-
-## Segmentation Prédiction
-
-Ce script permet de faire les prédictions à travers un modèle donnée et des tuiles exportées.
-
-### Paramètre
-
-Il prend en entrée :
-- DATA_DIR (str): Localisation des tuiles (mettre le fichier)
-- PREDICT_DIR (str): Nom du dossier avec les prédictions
-- PREDICTION_SEQUENCE (list): Chemin du dossier du modèle pour lesquels on fait les prédictions
-
-### Sortie
-
-Le code écrit dans le dossier du modèle les prédictions dans un nouveau dossier qui a le nom donnée dans prédict_dir des tuiles en niveau de gris représentant la probabilité de prédiction pour la classe.
-
-### Remarques
-
-En l'état actuel du code, le model doit se nomme best_model.pth dans le dossier.
-
-## Move Train
-
-Il permet de splitter l'export en trainet validation aléatoirement.
-
-### paramètres
-
-- image_folder (str) : Dossier avec les images
-- label_folder (str) : Dossier avec les labels
-- train_image_folder (str) : Dossier de direction des images de train
-- train_label_folder (str) : Dossier de direction des labels de train
-- validation_image_folder (str) : Dossier de direction des images de validation
-- validation_label_folder (str) : Dossier de direction des labels de validation
-- validation_split (float) : Part des tuiles allant dans la validation
-
-Il faut que dans les dossier les noms des labels soient strictement identique au nom des images en .tif pour les images et .png pour les labels.
-
-## Unpatchify_mask
-
-Permet de fusionner les tuiles selon la moyenne de probabilités. Utilise cython, l'extension unpatchify mask doit être dans le même dossier que le code.
-
-### Paramètres
-
- - RESULT_DIR (str) : Nom du dossier créé pour y mettre les resultats
- - DATA_DIR (list) : liste des dossier contenant les prédictions (chacune est faite un par un)
- - size (int) : taille des nos tuiles (elles doivent être carrés)
- - threshold_proba (int) : seuil de niveau de gris nécessaire pour classifier positif (entre 0 et 255)
-
-### Sortie 
-
-Le script trie les tuiles selon leur noms et met chaque lame dans un dossier
-Ensuite il fusionne toutes les tuiles et enregistre une image de notre tuiles entièrene png et exporte le geojson correspondant aux annotations selon le seuil prédéfini. Attention le geojson prédit les négatifs et pas les positifs.
-
-### Remarque
-
-Attention au formatage du nom de l'image il est nécessaire pour retrouver les valeurs de x et de y
-
-## Export Tiles
-
-Permet d'exporter des tuiles à partir de WSI
-Utilise open slide
-
-### Paramètres
-- RESULT_DIR (str): Dossier dans lequel on met les tuiles exportés
-- DATA_DIR (str) : Dossier dans lequel se trouve les lames
-- size (tuple) : Taille des tuiles format (x, y)
-- down_sample (int) : valeur du downsample
-- overlap (int) : Valeur du chevauchement, doit être inférieur à la taille de l'image.
-- threshold (int) : Valeur en dessous de la quelle le pixel en niveau de gris est considéré comme du tissue
-- part_tissue_min (str) : Proportion de tissue minimale pour garder la tuiles
-
-### Sortie
-Les tuiles sont enregistrés dans le fichier prédéfini dans RESULT_DIR. Le script boucle sur tout les élément du dossier indiqués dans DATA_DIR
-
-Les tuiles dont la preoportion de tissue est inférieur au seuil ne sont pas enregistré.
-
-## Prediction all
-
-Permet de faire des prédiction en donnant un modèle et une WSI d'entrée. Retourne un GeoJSON et une image de masque.
-
-### Paramètre
-- ENCODER (str) : Nom du modèle dans la librairie SMP pour notre modèle
-- ENCODER_WEIGHTS (str) : Nom du dataset utilisé pour le fine tunning dans la librairie SMP pour notre modèle.
-- DATA_DIR (str) : Chemin du fichier de l'image entière. (format autorisé par openslide pour l'image)
-- TILES_DIR (str) : Dossier de localisation du dossier temporaire contenant les tuiles de probabilité prédites
-- MODEL_DIR (str) : Chemin du fichier où se situe le modèle (en .pth)
-- RESULT_DIR (str) : Dossier dans lequel veulent être mis les résultats
-- IMAGE_NAME (str) : Nom de la lames qui doit être mis dans les fichier résultats
-- size (tuple) : Dimension des tuiles utilisés pour les prédictions
-- down_sample (int) : Redimensionnement de l'image
-- overlap (int) : Taille du chevauchmeent entre les images
-- threshold_tissue (int) : Valeur en dessous de la quelle le pixel en niveau de gris est considéré comme du tissue
-- part_tissue_min (float) : Pourcentage de tissue minimum pour faire la prédiction sur les tuiles
-- thresold_prediction (int) : Valeur minimale de la probabilité sur une echelle de 0 à 255 nécessaire pour classifier un pixel comme positif
-
-
-### Sortie
-
-Retourne dans le dossier résultat un masque de l'image entière en probabilité et iun geojson indiquant les zones non tumorales.
-
-Le dossier temporaire avec les tuiles peut ensuite être supprimé.
-
-### Remarques
-
-**Le code n'a jamais été testé donc est-ce qu'il marche ????**
-
-Il faut que le code cython du module unpatchify mask soit dans le même dossier
-
-Il est nécessaire d'indiquer l'encoder et les poids pour permettre d'effectuer la même normalisation sur les images de prédiction qu'au moment de l'entrainement.
-
-## Pour la partie cython utilisé dnas unpatchify_mask et prediction_all
-
-Les fichier sont compilé en utilisant cette commande :
-
-```python setup.py build_ext --inplace```
-Le code setup.py indiquant la localisation du code à compliler
-
-Le code en tant que tel est dans le fichier ```unpatchify_mask.pyx```
-
-### Module et librairie nécessaire
-
-J'ai du installer build_essential :```sudo apt install build_essential```
-
-ET la librairie cython : ```pip install cython```
-
-Je n'ai jamais réussi à le faire marché sur windows
-
+``` shell
+pip list
+```
