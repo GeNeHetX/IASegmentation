@@ -391,9 +391,9 @@ Le programme crée un dossier `label_cell` contenant l'ensemble des nouveaux lab
 Une fois l'ensemble des labels récupérés, nous pouvons re-entraîner notre programme `training_model_segmentation.py` sur nos nouveaux labels.
 
 Extraire l'ensemble des tuiles a demandé 2 semaines d'exécution. Je n'ai ainsi pas eu le temps de lancer le programme sur l'ensemble des données mais uniquement sur un sous-ensemble du dossier `Train`. Voici les résultats que nous avons obtenus :
-- **Précision** = 
-- **Sensibilité** = 
-- **Spécificité** = 
-- **VPP** = 
+- **Précision** = 0.9623
+- **Sensibilité** = 0.3607
+- **Spécificité** = 0.9999
+- **VPP** = 0.9946
 
 Il faudra ainsi relancer le modèle sur l'ensemble de nos nouveaux labels ainsi qu'effectuer différents tests.
