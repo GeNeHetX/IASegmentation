@@ -4,6 +4,7 @@ Après avoir récupéré l'ensemble de nos tuiles, nous pouvons entraîner notre
 - [Algorithme de segmentation](#1)
     - [training_model_segmentation.py](#training)
     - [best_model_seg.pth](#model)
+    - [proba_prediction.py](#proba)
 
 - [Algorithme de classification](#2)
     - [training_model_classification.py](#class_train)
@@ -70,7 +71,26 @@ Nous avons lancé le modèle sur plus de 7 bases de données différentes afin d
 
 Nous avons donc continué les entraînements avec cette base de données, créant le modèle : `best_model_seg.pth`.
 
+<div id='proba'/>
 
+## Probabilité des tuiles
+
+Afin d'améliorer les performances de notre modèle, nous avons essayé d'utiliser les probabilités de production.
+
+Nous avons ainsi réextrait les tuiles des lames de test avec un overlay de 256 pixels. Ainsi, chaque cellule est segmentée par 4 tuiles différentes.
+
+L'objectif de ce code est donc de compter les cellules segmentées plusieurs fois comme étant tumorales, ce qui pourrait ainsi modifier nos résultats.
+
+Le code `proba_prediction.py` a ainsi été initié, mais des améliorations restent à apporter au code, notamment la définition du seuil : 3 predictions sur 4 ou 2 predictions sur 4 pour segmenter la cellule en vrai prediction de cellule tumoral
+
+### Les données d'entrée
+
+- `LAME_DIR` : dossier contenant les lames entières
+- `LABEL_DIR` : dossier contenant les tuiles sur lesquelles nous allons effectuer les probabilités
+
+### Les données de sortie
+
+Le programme enregistre dans un dossier `test` les tuiles que nous obtenons avec la superposition de l'ensemble des masques segmentant cette tuile. Pour le moment, le programme reprend l'intégralité des masques. Il faudrait ainsi le modifier pour qu'il ne sélectionne que les parties du masque prédit comme positives à plusieurs reprises.
 
 <div id='2'/>
 
